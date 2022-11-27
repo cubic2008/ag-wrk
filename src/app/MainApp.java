@@ -64,7 +64,7 @@ public class MainApp {
 	}
 
 	private void cleanResponseFolder() {
-		if (CFG._logCleanResponseFolderBeforeRun) {
+		if (CFG._logCleanUpResponseFolderBeforeRun) {
 			File responseFolder = new File(CFG._logWrkOutputFoder);
 			File[] responseFiles = responseFolder.listFiles();
 			for (File file : responseFiles) {
@@ -72,6 +72,13 @@ public class MainApp {
 //				if (!file.delete()) {
 //					Logger.warn(String.format("[Clean response file] \"%s\" cannot be deleted.", file.getAbsoluteFile()));
 //				}
+			}
+		}
+		if (CFG._logCleanUpLogFolderBeforeRun) {
+			File responseFolder = new File(CFG._logWrkLogFolder);
+			File[] responseFiles = responseFolder.listFiles();
+			for (File file : responseFiles) {
+				Utils.deleteFile("Clean log file", file);
 			}
 		}
 	

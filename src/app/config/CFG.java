@@ -4,11 +4,12 @@ public class CFG {
 
 	public final static boolean _logRemoveTempFiles = true;
 	public final static boolean _logRemoveBrokerRunFiles = true;
-	public final static boolean _logCleanResponseFolderBeforeRun = true;
+	public final static boolean _logCleanUpResponseFolderBeforeRun = true;
+	public final static boolean _logCleanUpLogFolderBeforeRun = true;
 
 	public static final String _logSpecFileFolder = "C:\\temp\\ag-wrk\\spec";
 	public static final String _logSpecFilename = "wrk.spec";
-
+	
 	public static final String _logTempFolder = "c:\\temp\\ag-wrk\\temp";
 	public static final String _logBrokerSpecFileFolder = "c:\\temp\\ag-wrk\\run";
 	public static final String _logBrokerSpecFilenamePrefix = "wrk_brk";
@@ -19,12 +20,17 @@ public class CFG {
 	public static final String _logBrokerQuerySetFilePrefix = "queryset_brk";
 	public static final String _logBrokerQuerySetFileSuffix = ".txt";
 
-	// This will not be required.
 	public static final String _logWrkOutputFoder = "C:\\temp\\ag-wrk\\responses";
 	public static final String _logWrkOutputFilePrefix = "response_brk";
 	public static final String _logWrkOutputFileSuffix = ".txt";
-	////////////////////////////////////
-	
+
+	public final static boolean _logWriteWrkLogsToMainLog = false;
+	public static final String _logWrkLogFolder = "C:\\temp\\ag-wrk\\logs";
+	public static final String _logWrkLogFilePrefix = "log_brk";
+	public static final String _logWrkLogFileSuffix = ".log";
+	public static final String _logWrkErrFileSuffix = ".err";
+
+
 //	public static final String server = "https://abc.com/query?db=x";
 	
 	public static final int _logNumOfBrokers = 6;

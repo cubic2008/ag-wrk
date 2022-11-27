@@ -2,6 +2,8 @@ package app;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 import app.config.CFG;
@@ -23,6 +25,10 @@ public class WrkRunner implements Runnable{
 	private String runSpecFilename;
 	private String responseExperientalFilename;
 	private String responseStagingFilename;
+//	private String jobLogFilename = null;
+//	private String jobErrFilename = null;
+	private FileWriter jobLogWriter = null;
+	private FileWriter jobErrWriter = null;
 	
 //	public WrkRunner(int borkerIndex) {
 	public WrkRunner(int borkerIndex, String specFilename) {
@@ -36,6 +42,22 @@ public class WrkRunner implements Runnable{
 		this.responseStagingFilename = String.format("%s%s%s%d_stg%s", 
 				CFG._logWrkOutputFoder, File.separator, CFG._logWrkOutputFilePrefix,
 				brokerIndex + 1, CFG._logWrkOutputFileSuffix);
+		if (!CFG._logWriteWrkLogsToMainLog) {
+			String jobLogFilename = String.format("%s%s%s%d.%s", CFG._logWrkLogFolder, File.separator,
+					CFG._logWrkLogFilePrefix, brokerIndex, CFG._logWrkLogFileSuffix);
+			try {
+				this.jobLogWriter = new FileWriter(jobLogFilename);
+				if (CFG._logWrkErrFileSuffix.equals(CFG._logWrkLogFileSuffix)) {
+					this.jobErrWriter = this.jobLogWriter;
+				} else {
+					String jobErrFilename = String.format("%s%s%s%d.%s", CFG._logWrkLogFolder, File.separator,
+							CFG._logWrkLogFilePrefix, brokerIndex, CFG._logWrkErrFileSuffix);
+					this.jobErrWriter = new FileWriter(jobErrFilename);
+				}
+			} catch (IOException ioe) {
+				Logger.warn(String.format("Fail to write to job log file: %s", ioe.getMessage()));
+			}
+		}
 	}
 
 //	void runWrkForBroker(String borker, List<WrkBlockRunInfo> runInfos) {
@@ -76,11 +98,13 @@ public class WrkRunner implements Runnable{
 		wrkCommand[11] = "Experiental";
 		Runtime rt = Runtime.getRuntime();
         try {
+        	writeToLog("Running wrk for Experiental environment ...");
             Process p = rt.exec(wrkCommand);
             p.waitFor();
             logProcessOutput(p);
 //            String response = readProcessOutput(p);
 //            logger.info(response);
+        	writeToLog("Running wrk for Staging environment ...");
     		wrkCommand[7] = CFG._logBrokerStagingServerName[brokerIndex];
     		wrkCommand[9] = responseStagingFilename;
     		wrkCommand[11] = "Staging";
@@ -90,15 +114,26 @@ public class WrkRunner implements Runnable{
         }catch(Exception ex) {
             ex.printStackTrace();
         }
+        if (this.jobLogWriter != null) {
+        	try {
+				this.jobLogWriter.close();
+			} catch (IOException e) { }
+        }
+        if (this.jobErrWriter != null) {
+        	try {
+				this.jobErrWriter.close();
+			} catch (IOException e) { }
+        }
 	}
 	
 	private void logProcessOutput(Process p) throws Exception{
         BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String response = "";
+//        String response = "";
         String line;
         while ((line = reader.readLine()) != null) {
 //            response += line+"\r\n";
-        	Logger.info(line);
+//        	Logger.info(line);
+        	writeToLog(line);
         }
         reader.close();
         // 
@@ -106,11 +141,42 @@ public class WrkRunner implements Runnable{
         String errLine;
         while ((errLine = errReader.readLine()) != null) {
 //        	response += errLine+"\r\n";
-        	Logger.error(errLine);
+//        	Logger.error(errLine);
+        	writeToErr(errLine);
         }
         errReader.close();
 //        return response;
     }
+	
+	private void writeToLog(String message) {
+		if (this.jobLogWriter != null) {
+			try {
+				this.jobLogWriter.write(message + "\n");
+			} catch (IOException e) {
+				Logger.info(message);
+			}
+		} else {
+			Logger.info(message);
+		}
+	}
+	
+	private void writeToErr(String message) {
+		if (this.jobErrWriter != null) {
+			try {
+				this.jobErrWriter.write(message + "\n");
+			} catch (IOException e) {
+				Logger.info(message);
+			}
+		} else if (this.jobLogWriter != null) {
+			try {
+				this.jobLogWriter.write(message + "\n");
+			} catch (IOException e) {
+				Logger.info(message);
+			}
+		} else {
+			Logger.info(message);
+		}
+	}
 
 
 }
