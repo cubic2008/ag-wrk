@@ -27,15 +27,15 @@ public class CFG {
 	public final static boolean _logWriteWrkLogsToMainLog = false;
 	public static final String _logWrkLogFolder = "C:\\temp\\ag-wrk\\logs";
 	public static final String _logWrkLogFilePrefix = "log_brk";
-	public static final String _logWrkLogFileSuffix = ".log";
-	public static final String _logWrkErrFileSuffix = ".err";
+	public static final String _logWrkLogFileSuffix = ".log"; 
+	public static final String _logWrkErrFileSuffix = ".err"; // if it is the same as _logWrkLogFileSuffix, both log and err will be written to the same file.
 
 
 //	public static final String server = "https://abc.com/query?db=x";
 	
 	public static final int _logNumOfBrokers = 6;
 //	public static final int numOfRequestPerBlock = 1500;
-	
+
 	public static final String[] _logBrokerExperimentalServerName = {
 			"lva1-app98992-1.prod.linkedin.com",
 			"lva1-app98992-2.prod.linkedin.com",

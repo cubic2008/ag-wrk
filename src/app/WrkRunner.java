@@ -44,14 +44,14 @@ public class WrkRunner implements Runnable{
 				brokerIndex + 1, CFG._logWrkOutputFileSuffix);
 		if (!CFG._logWriteWrkLogsToMainLog) {
 			String jobLogFilename = String.format("%s%s%s%d.%s", CFG._logWrkLogFolder, File.separator,
-					CFG._logWrkLogFilePrefix, brokerIndex, CFG._logWrkLogFileSuffix);
+					CFG._logWrkLogFilePrefix, brokerIndex + 1, CFG._logWrkLogFileSuffix);
 			try {
 				this.jobLogWriter = new FileWriter(jobLogFilename);
 				if (CFG._logWrkErrFileSuffix.equals(CFG._logWrkLogFileSuffix)) {
 					this.jobErrWriter = this.jobLogWriter;
 				} else {
 					String jobErrFilename = String.format("%s%s%s%d.%s", CFG._logWrkLogFolder, File.separator,
-							CFG._logWrkLogFilePrefix, brokerIndex, CFG._logWrkErrFileSuffix);
+							CFG._logWrkLogFilePrefix, brokerIndex + 1, CFG._logWrkErrFileSuffix);
 					this.jobErrWriter = new FileWriter(jobErrFilename);
 				}
 			} catch (IOException ioe) {
@@ -95,22 +95,23 @@ public class WrkRunner implements Runnable{
 //		wrkCommand[9] = String.format("%s%s%s%d_%d%s", 
 //				CFG.wrkOutputFoder, File.separator, CFG.wrkOutputFilePrefix,
 //				specInfo.brokerIndex, specInfo.blockIndex, CFG.wrkOutputFileSuffix);
-		wrkCommand[11] = "Experiental";
+		wrkCommand[11] = "Experimental";
 		Runtime rt = Runtime.getRuntime();
         try {
-        	writeToLog("Running wrk for Experiental environment ...");
+        	// running wrk for Experimental environment
             Process p = rt.exec(wrkCommand);
             p.waitFor();
-            logProcessOutput(p);
+            logProcessOutput(p, "Experimental");
 //            String response = readProcessOutput(p);
 //            logger.info(response);
-        	writeToLog("Running wrk for Staging environment ...");
+
+            // running wrk for Staging environment
     		wrkCommand[7] = CFG._logBrokerStagingServerName[brokerIndex];
     		wrkCommand[9] = responseStagingFilename;
     		wrkCommand[11] = "Staging";
             p = rt.exec(wrkCommand);
             p.waitFor();
-            logProcessOutput(p);
+            logProcessOutput(p, "Staging");
         }catch(Exception ex) {
             ex.printStackTrace();
         }
@@ -126,7 +127,10 @@ public class WrkRunner implements Runnable{
         }
 	}
 	
-	private void logProcessOutput(Process p) throws Exception{
+	private void logProcessOutput(Process p, String env) throws Exception{
+    	writeToLog("-----------------------------------");
+    	writeToLog(String.format("wrk Log for %s environment", env));
+    	writeToLog("-----------------------------------");
         BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 //        String response = "";
         String line;
@@ -137,6 +141,9 @@ public class WrkRunner implements Runnable{
         }
         reader.close();
         // 
+    	writeToErr("-----------------------------------");
+    	writeToErr(String.format("wrk Log for %s environment", env));
+    	writeToErr("-----------------------------------");
         BufferedReader errReader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
         String errLine;
         while ((errLine = errReader.readLine()) != null) {
