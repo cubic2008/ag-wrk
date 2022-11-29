@@ -21,7 +21,7 @@ public class SpecFileGenerator {
 		try (FileWriter writer = new FileWriter(specFile)) {
 			for (int i = 0; i < 15; i ++) {
 				System.out.println("Generating spec request set . . . " + (i+1) );
-				writer.write(String.format("1.0,%s%d%s,XXXXXX\n", requestSetFilePrefix, i, requestSetFileSuffix));
+				writer.write(String.format("1.0,%s%d%s,QueryType-%d\n", requestSetFilePrefix, i, requestSetFileSuffix, new Double(Math.random() * i + 1).intValue()));
 				try (FileWriter reqWriter = new FileWriter(String.format("%s%s%s%d%s", 
 						requestSetFileFolder, File.separator, requestSetFilePrefix, i, requestSetFileSuffix ))) {
 					int totalLines = (int) (Math.random() * 20000);

@@ -8,7 +8,8 @@ public class CFG {
 	public final static boolean _logCleanUpLogFolderBeforeRun = true;
 
 	public static final String _logSpecFileFolder = "C:\\temp\\ag-wrk\\spec";
-	public static final String _logSpecFilename = "wrk.spec";
+//	public static final String _logSpecFilename = "wrk.spec";
+	public static final String _logSpecFilename = "C:\\temp\\ag-wrk\\spec\\wrk.spec";
 	
 	public static final String _logTempFolder = "c:\\temp\\ag-wrk\\temp";
 	public static final String _logBrokerSpecFileFolder = "c:\\temp\\ag-wrk\\run";
