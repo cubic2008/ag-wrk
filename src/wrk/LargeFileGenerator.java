@@ -23,14 +23,14 @@ public class LargeFileGenerator {
 		for (int i = 0; i < 100000; i ++) {
 			requestIds.add(i + 1);
 		}
+		StringBuilder sb = new StringBuilder("");
+		for (int j = 0; j < 8000; j++) {
+			sb.append("AAAAAAAAAA");
+		}
 		System.out.println("Generating large query set . . . " + querySetFile);
 		try (FileWriter writer = new FileWriter(querySetFile)) {
 			for (int i = 0; i < 100000; i ++) {
  				int requestId = requestIds.remove((int)(Math.random() * requestIds.size()));
- 				StringBuilder sb = new StringBuilder("");
- 				for (int j = 0; j < 80; j++) {
- 					sb.append("AAAAAAAAAA");
- 				}
  				writer.write(String.format("%d [https://server.com/query?reqid=%d%s]%n", requestId, requestId, sb.toString()));
 			}
 		}

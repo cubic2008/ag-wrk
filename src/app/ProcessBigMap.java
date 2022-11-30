@@ -31,7 +31,7 @@ public class ProcessBigMap {
 		try (	RandomAccessFile file1 = new RandomAccessFile(filename1, "r");
 				LineNumberReader lnReader = new LineNumberReader(new FileReader(filename2));) {
 			String line;
-//			int counter = 0;
+			int counter = 0;
 			while ((line = lnReader.readLine()) != null) {
 				String[] parts = line.split(" ");
 				if (parts.length > 1) {
@@ -44,11 +44,11 @@ public class ProcessBigMap {
 					}
 //					System.out.println("<<<<<< " + line2);
 //					System.out.println();
-//					if (counter % 500 == 0) {
+					if (counter % 500 == 0) {
 //						System.gc();
-//						System.out.println("[M]Free memory @ " + counter + " : " + Runtime.getRuntime().freeMemory());
-//					}
-//					counter++;
+						System.out.println("[M]Free memory @ " + counter + " : " + Runtime.getRuntime().freeMemory());
+					}
+					counter++;
 				}
 			}
 		}
