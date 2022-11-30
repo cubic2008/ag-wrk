@@ -55,8 +55,12 @@ public class MainApp {
 			System.out.println("Request[1] = " + app.readQuery(1, querySpecMap));
 			System.out.println("Request[12345] = " + app.readQuery(12345, querySpecMap));
 			System.out.println("Request[99999999] = " + app.readQuery(99999999, querySpecMap));
-			List<Long> requestIds = Arrays.asList(0L, 1L, 2L, 12345L, 12010L, 6436L, 6439L, 6437L, 6438L, 20000L, 30000L, 40000L, 80000L, 900000L, 99999999L, 123L, 100000L, 110000L, 114217L, 114218L, 120000L, 123823L, 123824L, 123825L);
-			System.out.println("retrieveQueries[99999999] = " + app.retrieveQueries(requestIds, querySpecMap));
+//			List<Long> requestIds = Arrays.asList(0L, 1L, 2L, 12345L, 12010L, 6436L, 6439L, 6437L, 6438L, 20000L, 30000L, 40000L, 80000L, 900000L, 99999999L, 123L, 100000L, 110000L, 114217L, 114218L, 120000L, 123823L, 123824L, 123825L);
+			List<Long> requestIds = new ArrayList<>();
+			for (long k = 0L; k < 129999L; k ++) {
+				requestIds.add(k);
+			}
+//			System.out.println("retrieveQueries[99999999] = " + app.retrieveQueries(requestIds, querySpecMap));
 			app.retrieveQueriesToFile(requestIds, "C:\\Temp\\ag-wrk\\temp\\retry-wrk.spec", querySpecMap);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -121,7 +125,7 @@ public class MainApp {
 					continue;
 				}
 
-				Logger.debug("lineCount = " + lineCount + ", querySetFilename = " + querySetFilename);
+//				Logger.debug("lineCount = " + lineCount + ", querySetFilename = " + querySetFilename);
 				
 				if (lnReader == null || !querySetFilename.equals(previousQuerySetFilename)) {
 					if (lnReader != null) {
@@ -141,6 +145,9 @@ public class MainApp {
 							specFileWriter.write(String.format("0.0,%s,%s%n", dataSetFilename, queryType));
 							querySetWriter = new FileWriter(specFileFolder + File.separator + dataSetFilename);
 							querySetFileWriters.put(queryType, querySetWriter);
+						}
+						if (line.trim().length() == 0 || "".equals(line)) {
+							System.out.println("-----------------------------------------------------------------------");
 						}
 						querySetWriter.write(line + "\n");
 //						Logger.debug(String.format("%s is added to %s / %s", line, queryType, queryList));
