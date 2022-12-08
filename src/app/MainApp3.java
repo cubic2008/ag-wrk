@@ -23,7 +23,7 @@ import app.config.CFG;
 import javafx.util.Pair;
 import logging.Logger;
 
-public class MainApp {
+public class MainApp3 {
 //	private static Logger logger = Logger.getLogger(WrkApp.class.getName());
 //	private static logging.Logger logger = new logging.Logger();
 
@@ -41,7 +41,7 @@ public class MainApp {
 
 	public static void main(String[] args) {
 		try {
-			MainApp app = new MainApp();
+			MainApp3 app = new MainApp3();
 //			Map<String, List<WrkBlockRunInfo>> specInfo = app.splitFiles();
 //			app.cleanResponseFolder();
 //			Map<Integer, String> specInfo = app.splitFiles();
@@ -51,44 +51,17 @@ public class MainApp {
 			List<Pair<Long, Long>> r = app.getBrokerQueryspecIndexes(12, querySpecMap);
 			System.out.println("r = " + r);
 			System.out.println("querySpecMap = " + querySpecMap);
-//			System.out.println("Request[0] = " + app.readQuery(0, querySpecMap));
-//			System.out.println("Request[1] = " + app.readQuery(1, querySpecMap));
-//			System.out.println("Request[12345] = " + app.readQuery(12345, querySpecMap));
-//			System.out.println("Request[99999999] = " + app.readQuery(99999999, querySpecMap));
-////			List<Long> requestIds = Arrays.asList(0L, 1L, 2L, 12345L, 12010L, 6436L, 6439L, 6437L, 6438L, 20000L, 30000L, 40000L, 80000L, 900000L, 99999999L, 123L, 100000L, 110000L, 114217L, 114218L, 120000L, 123823L, 123824L, 123825L);
-//			List<Long> requestIds = new ArrayList<>();
-//			for (long k = 0L; k < 129999L; k ++) {
-//				requestIds.add(k);
-//			}
-////			System.out.println("retrieveQueries[99999999] = " + app.retrieveQueries(requestIds, querySpecMap));
-//			app.retrieveQueriesToFile(requestIds, "C:\\Temp\\ag-wrk\\temp\\retry-wrk.spec", querySpecMap);
-			
-			QueryRetriever qr = new QueryRetriever(querySpecMap);
-			Logger.debug(qr.getQuery(-1));
-			Logger.debug(qr.getQuery(0));
-			Logger.debug(qr.getQuery(1));
-			Logger.debug(qr.getQuery(2));
-			Logger.debug(qr.getQuery(6438));
-			Logger.debug(qr.getQuery(6439));
-			Logger.debug(qr.getQuery(6440));
-			Logger.debug(qr.getQuery(10000));
-			Logger.debug(qr.getQuery(20000));
-			Logger.debug(qr.getQuery(25000));
-			Logger.debug(qr.getQuery(25002));
-			Logger.debug(qr.getQuery(25001));
-			Logger.debug(qr.getQuery(30000));
-			Logger.debug(qr.getQuery(40000));
-			Logger.debug(qr.getQuery(50000));
-			Logger.debug(qr.getQuery(60000));
-			Logger.debug(qr.getQuery(70000));
-			Logger.debug(qr.getQuery(80000));
-			Logger.debug(qr.getQuery(90000));
-			Logger.debug(qr.getQuery(100000));
-			Logger.debug(qr.getQuery(110000));
-			Logger.debug(qr.getQuery(120000));
-			Logger.debug(qr.getQuery(130000));
-			Logger.debug(qr.getQuery(140000));
-
+			System.out.println("Request[0] = " + app.readQuery(0, querySpecMap));
+			System.out.println("Request[1] = " + app.readQuery(1, querySpecMap));
+			System.out.println("Request[12345] = " + app.readQuery(12345, querySpecMap));
+			System.out.println("Request[99999999] = " + app.readQuery(99999999, querySpecMap));
+//			List<Long> requestIds = Arrays.asList(0L, 1L, 2L, 12345L, 12010L, 6436L, 6439L, 6437L, 6438L, 20000L, 30000L, 40000L, 80000L, 900000L, 99999999L, 123L, 100000L, 110000L, 114217L, 114218L, 120000L, 123823L, 123824L, 123825L);
+			List<Long> requestIds = new ArrayList<>();
+			for (long k = 0L; k < 129999L; k ++) {
+				requestIds.add(k);
+			}
+//			System.out.println("retrieveQueries[99999999] = " + app.retrieveQueries(requestIds, querySpecMap));
+			app.retrieveQueriesToFile(requestIds, "C:\\Temp\\ag-wrk\\temp\\retry-wrk.spec", querySpecMap);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
